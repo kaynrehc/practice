@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Arrays;
 import java.util.Collection;
 
-@Ignore
+//@Ignore
 @RunWith(value = Parameterized.class)
 public class TestProConn {
 	private static final Logger logger = LoggerFactory.getLogger(TestProConn.class);

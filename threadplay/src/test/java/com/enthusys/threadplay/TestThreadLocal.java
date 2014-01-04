@@ -13,7 +13,7 @@ import java.util.Collection;
 
 import static org.junit.Assert.assertTrue;
 
-//@Ignore
+@Ignore
 @RunWith(value = Parameterized.class)
 public class TestThreadLocal extends Thread {
 	private static final Logger logger = LoggerFactory.getLogger(TestThreadLocal.class);

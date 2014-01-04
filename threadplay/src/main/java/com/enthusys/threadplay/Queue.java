@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 public class Queue {
 	private static final Logger logger = LoggerFactory.getLogger(Queue.class);
 	private int myValue;
+	private boolean valueSet = false;
 
     public Queue() {
         logger.debug("***** Queue()");
@@ -14,7 +15,7 @@ public class Queue {
 
     public synchronized void put(int x) {
 
-        while (myValue != -1) {
+        while (valueSet) {
             try {
                 wait();
             } catch (InterruptedException e) {
@@ -22,12 +23,13 @@ public class Queue {
             }
         }
         myValue = x;
+		valueSet = true;
         notify();
     }
 
     public synchronized int get() {
 
-        while (myValue == -1) {
+        while (!valueSet) {
             try {
                 wait();
             } catch (InterruptedException e) {
@@ -37,7 +39,8 @@ public class Queue {
 
         int rv = myValue;
         myValue = -1;
-        notify();
+		valueSet = false;
+		notify();
         return rv;
     }
 }
