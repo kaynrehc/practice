@@ -13,7 +13,7 @@ import java.util.Collection;
 
 import static org.junit.Assert.assertEquals;
 
-//@Ignore
+@Ignore
 @RunWith(value = Parameterized.class)
 public class TestCallCounter {
 	private static final Logger logger = LoggerFactory.getLogger(TestCallCounter.class);
