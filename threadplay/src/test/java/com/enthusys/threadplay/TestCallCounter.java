@@ -12,7 +12,7 @@ import java.util.Collection;
 
 import static org.junit.Assert.assertEquals;
 
-@RunWith(value= Parameterized.class)
+@RunWith(value = Parameterized.class)
 public class TestCallCounter {
 	private static final Logger logger = LoggerFactory.getLogger(TestCallCounter.class);
 
@@ -21,16 +21,20 @@ public class TestCallCounter {
 
 	@Parameters
 	public static Collection<Integer[]> getParameters() {
-		return Arrays.asList(new Integer[][] {
-			{2,4},
-			{1000,2000},
-			{2000,4000},
+		return Arrays.asList(new Integer[][]{
+				{0},
+				{1},
+				{2},
+				{1000},
+				{2000},
+				{12345},
+				{5133515}
 		});
 	}
 
-	public TestCallCounter(int nIterations, int nExpectedNumber) {
+	public TestCallCounter(int nIterations) {
 		this.nIterations = nIterations;
-		this.nExpectedNumber = nExpectedNumber;
+		this.nExpectedNumber = nIterations * 3;
 	}
 
 	@Test
@@ -38,11 +42,14 @@ public class TestCallCounter {
 		CallCounter callCounter = new CallCounter();
 		Thread t1 = new Thread(new SimpleCaller(callCounter, nIterations));
 		Thread t2 = new Thread(new SimpleCaller(callCounter, nIterations));
+		Thread t3 = new Thread(new SimpleCaller(callCounter, nIterations));
 
 		t1.start();
 		t2.start();
+		t3.start();
 
 		try {
+			t3.join();
 			t1.join();
 			t2.join();
 		} catch (InterruptedException e) {
