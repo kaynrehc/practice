@@ -1,10 +1,14 @@
 package com.enthusys.threadplay;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class Queue {
-    private int myValue;
+	private static final Logger logger = LoggerFactory.getLogger(Queue.class);
+	private int myValue;
 
     public Queue() {
-        System.out.println("***** Queue()");
+        logger.debug("***** Queue()");
         myValue = -1;
     }
 

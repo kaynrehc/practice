@@ -12,8 +12,10 @@ public class CallCounter {
 		callCounter = 0;
 	}
 
-	public synchronized void callMe() {
-		callCounter++;
+	public void callMe() {
+		synchronized (this) {
+			callCounter++;
+		}
 	}
 
 	public int getCallCounter() {
