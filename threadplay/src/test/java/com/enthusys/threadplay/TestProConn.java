@@ -1,6 +1,8 @@
 package com.enthusys.threadplay;
 
+import org.junit.Ignore;
 import org.junit.Test;
+
 import static org.junit.Assert.assertEquals;
 
 import org.junit.runner.RunWith;
@@ -12,7 +14,8 @@ import org.slf4j.LoggerFactory;
 import java.util.Arrays;
 import java.util.Collection;
 
-@RunWith(value= Parameterized.class)
+@Ignore
+@RunWith(value = Parameterized.class)
 public class TestProConn {
 	private static final Logger logger = LoggerFactory.getLogger(TestProConn.class);
 
@@ -20,13 +23,13 @@ public class TestProConn {
 
 	@Parameters
 	public static Collection<Integer[]> getParameters() {
-		return Arrays.asList(new Integer[][] {
-			{0},
-			{1},
-			{2},
-			{1000},
-			{2000},
-			{5000},
+		return Arrays.asList(new Integer[][]{
+				{0},
+				{1},
+				{2},
+				{1000},
+				{2000},
+				{5000},
 		});
 	}
 
@@ -38,8 +41,8 @@ public class TestProConn {
 	public void testProCon() {
 		Queue q = new Queue();
 
-		Consumer consumer = new Consumer(q,nIterations);
-		Producer producer = new Producer(q,nIterations);
+		Consumer consumer = new Consumer(q, nIterations);
+		Producer producer = new Producer(q, nIterations);
 
 		Thread tConsumer = new Thread(consumer);
 		tConsumer.start();
