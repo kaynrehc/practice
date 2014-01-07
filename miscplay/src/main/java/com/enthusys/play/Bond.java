@@ -9,9 +9,9 @@ import java.util.Date;
  */
 public class Bond {
 	private String issuer;
-	private int term;
+	private long term;
 	private Date maturityDate;
-	private float notionalAmount;
+	private double notionalAmount;
 	private float couponRate;
 
 	public Bond(String issuer, int term, Date maturityDate, float notionalAmount, float couponRate) {
@@ -31,6 +31,19 @@ public class Bond {
 	}
 
 	@Override
+	public int hashCode() {
+		int result;
+		long temp;
+		result = (issuer == null) ? 0 : issuer.hashCode();
+		result = 31 * result + (int) (term ^ (term >>> 32));
+		result = 31 * result + ((maturityDate == null) ? 0 : maturityDate.hashCode());
+		temp = Double.doubleToLongBits(notionalAmount);
+		result = 31 * result + (int) (temp ^ (temp >>> 32));
+		result = 31 * result + (couponRate != +0.0f ? Float.floatToIntBits(couponRate) : 0);
+		return result;
+	}
+
+	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
@@ -43,7 +56,7 @@ public class Bond {
 		if (this.issuer == null ? rhs.issuer == null : issuer.equals(rhs.issuer) &&
 				this.term == rhs.term &&
 				this.issuer == null ? rhs.maturityDate == null : issuer.equals(rhs.issuer) &&
-				Float.compare(this.notionalAmount, rhs.notionalAmount) == 0 &&
+				Double.compare(this.notionalAmount, rhs.notionalAmount) == 0 &&
 				Float.compare(this.couponRate, rhs.couponRate) == 0) {
 			return true;
 		}
@@ -61,11 +74,11 @@ public class Bond {
 				'}';
 	}
 
-	public int getTerm() {
+	public long getTerm() {
 		return term;
 	}
 
-	public void setTerm(int term) {
+	public void setTerm(long term) {
 		this.term = term;
 	}
 
@@ -85,11 +98,11 @@ public class Bond {
 		this.maturityDate = maturityDate;
 	}
 
-	public float getNotionalAmount() {
+	public double getNotionalAmount() {
 		return notionalAmount;
 	}
 
-	public void setNotionalAmount(float notionalAmount) {
+	public void setNotionalAmount(double notionalAmount) {
 		this.notionalAmount = notionalAmount;
 	}
 
