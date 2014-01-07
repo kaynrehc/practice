@@ -40,15 +40,13 @@ public class Bond {
 
 		Bond rhs = (Bond) obj;
 
-		if (this.issuer == null ? rhs.issuer == null : issuer.equals(rhs.issuer))
-
-			if (this.issuer == null ? rhs.issuer == null : issuer.equals(rhs.issuer) &&
-					this.term == rhs.term &&
-					this.issuer == null ? rhs.maturityDate == null : issuer.equals(rhs.issuer) &&
-					Float.compare(this.notionalAmount, rhs.notionalAmount) == 0 &&
-					Float.compare(this.couponRate, rhs.couponRate) == 0) {
-				return true;
-			}
+		if (this.issuer == null ? rhs.issuer == null : issuer.equals(rhs.issuer) &&
+				this.term == rhs.term &&
+				this.issuer == null ? rhs.maturityDate == null : issuer.equals(rhs.issuer) &&
+				Float.compare(this.notionalAmount, rhs.notionalAmount) == 0 &&
+				Float.compare(this.couponRate, rhs.couponRate) == 0) {
+			return true;
+		}
 
 		return false;
 	}
