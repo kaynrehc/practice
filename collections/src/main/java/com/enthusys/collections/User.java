@@ -3,12 +3,14 @@ package com.enthusys.collections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Serializable;
+
 /**
  * User: mchernyak
  * Date: 1/7/14
  * Time: 1:33 PM
  */
-public class User {
+public class User implements Comparable, Serializable {
 	private static final Logger logger = LoggerFactory.getLogger(UserPlay.class);
 	private static Integer baseNumber;
 	private Integer number;
@@ -25,8 +27,22 @@ public class User {
 	private String username;
 	private String password;
 
+	/**
+	 * Base number plus the line number read from the file make up the User 'unique' number
+	 *
+	 * @param baseNumber static variable to hold the current base number
+	 */
 	public static void setBaseNumber(Integer baseNumber) {
 		User.baseNumber = baseNumber;
+	}
+
+	@Override
+	public int compareTo(Object rhs) {
+		User user = (User) rhs;
+		if (this == user)
+			return 0;
+		return (this.username.compareTo(user.username));
+//		return(this.number - user.number);
 	}
 
 	public User(String csvline) {
@@ -89,6 +105,11 @@ public class User {
 		return result;
 	}
 
+	/**
+	 * Include all of the User attributes in toString
+	 *
+	 * @return String object containing all relevant info about User instance
+	 */
 	@Override
 	public String toString() {
 		return "User{" +

@@ -8,30 +8,38 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeSet;
 
 public class UserPlay {
 	private static final Logger logger = LoggerFactory.getLogger(UserPlay.class);
-	private Map<Integer, User> users;
+	private Map<Integer, User> userMap;
+	private TreeSet<User> userTreeSet;
 
 	public static void main(String[] args) {
 	}
 
 	public Map<Integer,User> getUserMap() {
-		return users;
+		return userMap;
+	}
+
+	public TreeSet<User> getUserTreeSet() {
+		return userTreeSet;
 	}
 
 	public UserPlay() {
-		users = new HashMap<Integer, User>();
+		userMap = new HashMap<Integer, User>();
+		userTreeSet = new TreeSet<User>();
+
 		loadUsersFromFile("/home/mchernyak/data/People1.csv");
 		loadUsersFromFile("/home/mchernyak/data/People2.csv");
 	}
 
 	public int getNumberOfUsers() {
-		return users.size();
+		return userMap.size();
 	}
 
 	public User getUserByNumber(Integer number) {
-		User u = users.get(number);
+		User u = userMap.get(number);
 		return u;
 	}
 
@@ -47,7 +55,8 @@ public class UserPlay {
 
 			while ((line = br.readLine()) != null) {
 				User u = new User(line);
-				users.put(u.getNumber(), u);
+				userMap.put(u.getNumber(), u);
+				userTreeSet.add(u);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

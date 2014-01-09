@@ -5,11 +5,15 @@ import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
 import java.util.Map;
+import java.util.TreeSet;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+/**
+ *
+ */
 public class TestUserPlay {
 	private static final Logger logger = LoggerFactory.getLogger(TestUserPlay.class);
 
@@ -41,8 +45,19 @@ public class TestUserPlay {
 		lStartTime = System.currentTimeMillis();
 		Map<Integer, User> userMap = userPlay.getUserMap();
 		for (Map.Entry<Integer, User> entry : userMap.entrySet()) {
-			entry.getKey(); entry.getValue();
+			entry.getKey();
+			entry.getValue();
 		}
-		logger.info("*** time to iterate:{}", System.currentTimeMillis() - lStartTime);
+		logger.info("*** time to iterate map:{}", System.currentTimeMillis() - lStartTime);
+
+		// iterate over TreeSet
+		lStartTime = System.currentTimeMillis();
+		TreeSet<User> userSet = userPlay.getUserTreeSet();
+		assertEquals("expect exact number of users", 100000, userSet.size());
+
+		for (User u : userSet) {
+			logger.debug("*** {}", u);
+		}
+		logger.info("*** time to iterate TreeSet:{}", System.currentTimeMillis() - lStartTime);
 	}
 }
