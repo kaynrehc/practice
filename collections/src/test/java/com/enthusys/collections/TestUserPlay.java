@@ -56,7 +56,7 @@ public class TestUserPlay {
 		assertEquals("expect exact number of users", 100000, userSet.size());
 
 		for (User u : userSet) {
-			logger.debug("*** {}", u);
+//			logger.debug("*** {}", u);
 		}
 		logger.info("*** time to iterate TreeSet:{}", System.currentTimeMillis() - lStartTime);
 	}

@@ -1,4 +1,4 @@
-package com.enthusys.play;
+package com.enthusys.play.vehicle;
 
 /**
  * User: mchernyak
@@ -6,7 +6,7 @@ package com.enthusys.play;
  * Time: 8:23 PM
  */
 public class LandVehicle implements Vehicle {
-	String name;
+	private String name;
 
 	@Override
 	public String getName() {

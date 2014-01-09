@@ -1,5 +1,9 @@
 package com.enthusys.play;
 
+import com.enthusys.play.vehicle.Car;
+import com.enthusys.play.vehicle.LandVehicle;
+import com.enthusys.play.vehicle.Vehicle;
+
 /**
  * User: mchernyak
  * Date: 1/6/14

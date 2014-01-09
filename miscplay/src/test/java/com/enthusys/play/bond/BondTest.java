@@ -1,11 +1,10 @@
-package com.enthusys.play;
+package com.enthusys.play.bond;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
 import java.util.Calendar;
-import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

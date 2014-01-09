@@ -38,11 +38,33 @@ public class User implements Comparable, Serializable {
 
 	@Override
 	public int compareTo(Object rhs) {
+		int rv = 0;
+
 		User user = (User) rhs;
 		if (this == user)
 			return 0;
-		return (this.username.compareTo(user.username));
-//		return(this.number - user.number);
+
+		rv = this.username.compareTo(user.username);
+		if (rv != 0)
+			return rv;
+
+		rv = this.surname.compareTo(user.surname);
+		if (rv != 0)
+			return rv;
+
+		rv = this.givenName.compareTo(user.givenName);
+		if (rv != 0)
+			return rv;
+
+		rv = this.middleInitial.compareTo(user.middleInitial);
+		if (rv != 0)
+			return rv;
+
+		rv = this.streetAddress.compareTo(user.streetAddress);
+		if (rv != 0)
+			return rv;
+
+		return (this.number - user.number);
 	}
 
 	public User(String csvline) {
@@ -114,7 +136,7 @@ public class User implements Comparable, Serializable {
 	public String toString() {
 		return "User{" +
 				"number=" + number +
-				", gender='" + gender + '\'' +
+				", username='" + username + '\'' +
 				", givenName='" + givenName + '\'' +
 				", middleInitial='" + middleInitial + '\'' +
 				", surname='" + surname + '\'' +
@@ -124,8 +146,8 @@ public class User implements Comparable, Serializable {
 				", zipCode='" + zipCode + '\'' +
 				", country='" + country + '\'' +
 				", emailAddress='" + emailAddress + '\'' +
-				", username='" + username + '\'' +
 				", password='" + password + '\'' +
+				", gender='" + gender + '\'' +
 				'}';
 	}
 

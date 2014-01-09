@@ -1,4 +1,4 @@
-package com.enthusys.play;
+package com.enthusys.play.vehicle;
 
 /**
  * User: mchernyak
