@@ -13,7 +13,15 @@ import net.jcip.annotations.*;
 public class MutablePoint {
     public int x, y;
 
-    public MutablePoint() {
+	public int getX() {
+		return x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public MutablePoint() {
         x = 0;
         y = 0;
     }
@@ -22,4 +30,12 @@ public class MutablePoint {
         this.x = p.x;
         this.y = p.y;
     }
+
+	@Override
+	public String toString() {
+		return "Pt{" +
+				"x=" + x +
+				", y=" + y +
+				'}';
+	}
 }
