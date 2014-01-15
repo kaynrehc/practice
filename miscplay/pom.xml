@@ -16,6 +16,16 @@
         <junit.version>4.10</junit.version>
     </properties>
 
+    <!--<reporting>-->
+            <!--<plugins>-->
+                <!--<plugin>-->
+                    <!--<groupId>org.codehaus.mojo</groupId>-->
+                    <!--<artifactId>cobertura-maven-plugin</artifactId>-->
+                    <!--<version>2.6</version>-->
+                <!--</plugin>-->
+            <!--</plugins>-->
+    <!--</reporting>-->
+
     <build>
         <pluginManagement>
             <plugins>
@@ -33,6 +43,29 @@
                         <target>${jdk.version}</target>
                         <encoding>ISO-8859-1</encoding>
                     </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>cobertura-maven-plugin</artifactId>
+                    <version>2.6</version>
+                    <configuration>
+                        <instrumentation>
+                            <ignores>
+                                <ignore>com.example.boringcode.*</ignore>
+                            </ignores>
+                            <excludes>
+                                <exclude>com/example/dullcode/**/*.class</exclude>
+                                <exclude>com/example/**/*Test.class</exclude>
+                            </excludes>
+                        </instrumentation>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>clean</goal>
+                            </goals>
+                        </execution>
+                    </executions>
                 </plugin>
             </plugins>
         </pluginManagement>
