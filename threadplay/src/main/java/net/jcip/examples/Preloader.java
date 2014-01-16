@@ -1,9 +1,12 @@
 package net.jcip.examples;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.concurrent.*;
 
 public class Preloader {
-
+	private static final Logger logger = LoggerFactory.getLogger(Preloader.class);
 	private final ProductInfoCreator productInfoCreator = new ProductInfoCreator();
 	private final FutureTask<ProductInfo> productInfoFutureTask = new FutureTask<ProductInfo>(productInfoCreator);
 
@@ -12,26 +15,28 @@ public class Preloader {
 	 */
 	private class ProductInfoCreator implements Callable<ProductInfo> {
 		public ProductInfo call() throws DataLoadException {
-			ProductInfo productInfo = new ProductInfo();
-			long milli = 0;
-			while ((milli = System.currentTimeMillis()) % 10000 != 0) ;
-			productInfo.setName("[PI_" + milli + "]");
+			logger.info("***** ProductInfoCreator.call()");
+			try {
+				Thread.sleep(10000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			ProductInfo productInfo = new ProductInfo("[PI_" + System.currentTimeMillis() + "]");
 			return productInfo;
 		}
 	}
 
 	public void start() {
-		System.out.println("***** Preloader.start()");
+		logger.info("***** Preloader.start()");
 		new Thread(productInfoFutureTask).start();
 	}
 
-	public ProductInfo get()
-			throws DataLoadException, InterruptedException {
+	public ProductInfo get() throws DataLoadException, InterruptedException {
 
-		System.out.println("***** Preloader.get()");
+		logger.info("***** Preloader.get()");
 
 		try {
-			System.out.println("***** calling productInfoFutureTask.get()");
+			logger.info("***** calling productInfoFutureTask.get()");
 			return productInfoFutureTask.get();
 		} catch (ExecutionException e) {
 			Throwable cause = e.getCause();
@@ -45,11 +50,7 @@ public class Preloader {
 	class ProductInfo {
 		String name;
 
-		String getName() {
-			return name;
-		}
-
-		void setName(String name) {
+		ProductInfo(String name) {
 			this.name = name;
 		}
 
@@ -62,7 +63,7 @@ public class Preloader {
 	}
 
 	public static void main(String[] args) {
-		System.out.println("***** main() start");
+		logger.info("***** main() start");
 
 		Preloader preloader = new Preloader();
 		preloader.start();
@@ -76,8 +77,8 @@ public class Preloader {
 			e.printStackTrace();
 		}
 
-		System.out.println("***** " + pi);
-		System.out.println("***** main() finish");
+		logger.info("***** " + pi);
+		logger.info("***** main() finish");
 	}
 }
 
