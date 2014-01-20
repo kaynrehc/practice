@@ -21,7 +21,7 @@ class XThread implements Runnable {
 		System.out.println("Starting " + name);
 
 		try {
-			// First, get a permit.
+			//********************* First, get a permit.
 			System.out.println(name + " is waiting for a permit.");
 			sem.acquire();
 			System.out.println(name + " gets a permit.");
@@ -38,7 +38,7 @@ class XThread implements Runnable {
 			System.out.println(exc);
 		}
 
-		// Release the permit.
+		// ********************* Release the permit.
 		System.out.println(name + " releases the permit.");
 		sem.release();
 	}

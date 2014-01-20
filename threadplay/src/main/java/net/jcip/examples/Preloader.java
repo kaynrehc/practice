@@ -24,6 +24,8 @@ public class Preloader {
 			ProductInfo productInfo = new ProductInfo("[PI_" + System.currentTimeMillis() + "]");
 			return productInfo;
 		}
+
+		Throwable t = new Throwable();
 	}
 
 	public void start() {

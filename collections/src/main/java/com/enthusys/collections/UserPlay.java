@@ -6,17 +6,13 @@ import org.slf4j.LoggerFactory;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeSet;
+import java.util.*;
 
 public class UserPlay {
 	private static final Logger logger = LoggerFactory.getLogger(UserPlay.class);
 	private Map<Integer, User> userMap;
 	private TreeSet<User> userTreeSet;
-
-	public static void main(String[] args) {
-	}
+	private List<User> userList;
 
 	public Map<Integer,User> getUserMap() {
 		return userMap;
@@ -29,17 +25,19 @@ public class UserPlay {
 	public UserPlay() {
 		userMap = new HashMap<Integer, User>();
 		userTreeSet = new TreeSet<User>();
+		userList = new ArrayList<User>();
 
 		loadUsersFromFile("/home/mchernyak/data/People1.csv");
 		loadUsersFromFile("/home/mchernyak/data/People2.csv");
 	}
 
 	public int getNumberOfUsers() {
-		return userMap.size();
+		return userList.size();
 	}
 
 	public User getUserByNumber(Integer number) {
-		User u = userMap.get(number);
+		//User u = userMap.get(number);
+		User u = userList.get(number);
 		return u;
 	}
 
@@ -55,8 +53,9 @@ public class UserPlay {
 
 			while ((line = br.readLine()) != null) {
 				User u = new User(line);
-				userMap.put(u.getNumber(), u);
-				userTreeSet.add(u);
+				//userMap.put(u.getNumber(), u);
+				//userTreeSet.add(u);
+				userList.add(u);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

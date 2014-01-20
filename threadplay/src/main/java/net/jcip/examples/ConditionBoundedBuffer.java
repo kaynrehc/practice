@@ -1,6 +1,8 @@
 package net.jcip.examples;
 
-import java.util.concurrent.locks.*;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import net.jcip.annotations.*;
 

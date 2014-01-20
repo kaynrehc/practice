@@ -5,36 +5,48 @@ import org.slf4j.LoggerFactory;
 import org.junit.Test;
 
 import java.util.Map;
+import java.util.Random;
 import java.util.TreeSet;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 /**
  *
  */
 public class TestUserPlay {
 	private static final Logger logger = LoggerFactory.getLogger(TestUserPlay.class);
+	private static final int TOTAL_USERS = 100000;
 
-	@Test
+	// @Test
 	public void testLoadUsers() {
 		UserPlay userPlay = new UserPlay();
 		logger.info("*** total users: {}", userPlay.getNumberOfUsers());
-		assertEquals("expect exact number of users", 100000, userPlay.getNumberOfUsers());
+		assertEquals("expect exact number of users", TOTAL_USERS, userPlay.getNumberOfUsers());
 
-		User testUser = userPlay.getUserByNumber(150000 + 49946);
+		User testUser = userPlay.getUserByNumber(50000 + 49945);
 		logger.info("*** {}", testUser);
 		assertEquals("name must match", "Lang", testUser.getSurname());
 		assertEquals("username must match", "Theirequal", testUser.getUsername());
 
-		testUser = userPlay.getUserByNumber(100000 + 2007);
+		testUser = userPlay.getUserByNumber(2006);
 		logger.info("*** {}", testUser);
 		assertEquals("name must match", "Shcherbakov", testUser.getSurname());
 		assertEquals("username must match", "Tatelly1963", testUser.getUsername());
 	}
 
 	@Test
+	public void testRandomNames() {
+		Random random = new Random();
+ 		UserPlay userPlay = new UserPlay();
+		User user1 = userPlay.getUserByNumber(random.nextInt() % TOTAL_USERS);
+		User user2 = userPlay.getUserByNumber(random.nextInt() % TOTAL_USERS);
+		User user3 = userPlay.getUserByNumber(random.nextInt() % TOTAL_USERS);
+		logger.info("***** {}", user1);
+		logger.info("***** {}", user2);
+		logger.info("***** {}", user3);
+	}
+
+	// @Test
 	public void testAccessUsers() {
 		long lStartTime = System.currentTimeMillis();
 		UserPlay userPlay = new UserPlay();
