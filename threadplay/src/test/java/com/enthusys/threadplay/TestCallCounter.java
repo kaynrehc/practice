@@ -10,10 +10,13 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import static org.junit.Assert.assertEquals;
 
-@Ignore
+//@Ignore
 @RunWith(value = Parameterized.class)
 public class TestCallCounter {
 	private static final Logger logger = LoggerFactory.getLogger(TestCallCounter.class);
@@ -27,11 +30,11 @@ public class TestCallCounter {
 		return Arrays.asList(new Integer[][]{
 				{3, 0},
 				{3, 1},
-				{3, 2},
+				{15, 2},
 				{4, 1000},
 				{5, 2000},
 				{6, 12345},
-				{5, 5133515}
+//				{5, 5133515}
 		});
 	}
 
@@ -41,7 +44,7 @@ public class TestCallCounter {
 		this.nExpectedNumber = nIterations * nThreads;
 	}
 
-	@Test
+	// @Test
 	public void testCallCounter() {
 
 		CallCounter callCounter = new CallCounter();
@@ -65,5 +68,27 @@ public class TestCallCounter {
 
 		logger.info("***** testCallCounter() stops threads:{}, iterations:{}, expected calls:{}", nThreads,
 				nIterations, nExpectedNumber);
+	}
+
+	@Test
+	public void testCallCounterUsingExecutor() {
+		CallCounter callCounter = new CallCounter();
+//		Executor exec = Executors.newFixedThreadPool(nThreads);
+		Executor exec = Executors.newCachedThreadPool();
+		CountDownLatch stopCountDownLatch = new CountDownLatch(nThreads);
+
+		for (int i = 0; i < nThreads; i++)
+			exec.execute(new SimpleCaller(callCounter, nIterations, stopCountDownLatch));
+
+		try {
+			stopCountDownLatch.await();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		logger.info("***** testCallCounterUsingExecutor() stops threads:{}, iterations:{}, expected calls:{}",
+				nThreads, nIterations, nExpectedNumber);
+
+		assertEquals("call counter test", nExpectedNumber, callCounter.getCallCounter());
+
 	}
 }
