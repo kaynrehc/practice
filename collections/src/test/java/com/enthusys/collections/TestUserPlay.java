@@ -17,18 +17,18 @@ public class TestUserPlay {
 	private static final Logger logger = LoggerFactory.getLogger(TestUserPlay.class);
 	private static final int TOTAL_USERS = 100000;
 
-	// @Test
+	@Test
 	public void testLoadUsers() {
 		UserPlay userPlay = new UserPlay();
 		logger.info("*** total users: {}", userPlay.getNumberOfUsers());
 		assertEquals("expect exact number of users", TOTAL_USERS, userPlay.getNumberOfUsers());
 
-		User testUser = userPlay.getUserByNumber(50000 + 49945);
+		User testUser = userPlay.getUserByNumberViaList(50000 + 49945);
 		logger.info("*** {}", testUser);
 		assertEquals("name must match", "Lang", testUser.getSurname());
 		assertEquals("username must match", "Theirequal", testUser.getUsername());
 
-		testUser = userPlay.getUserByNumber(2006);
+		testUser = userPlay.getUserByNumberViaList(2006);
 		logger.info("*** {}", testUser);
 		assertEquals("name must match", "Shcherbakov", testUser.getSurname());
 		assertEquals("username must match", "Tatelly1963", testUser.getUsername());
@@ -37,16 +37,50 @@ public class TestUserPlay {
 	@Test
 	public void testRandomNames() {
 		Random random = new Random();
- 		UserPlay userPlay = new UserPlay();
-		User user1 = userPlay.getUserByNumber(random.nextInt() % TOTAL_USERS);
-		User user2 = userPlay.getUserByNumber(random.nextInt() % TOTAL_USERS);
-		User user3 = userPlay.getUserByNumber(random.nextInt() % TOTAL_USERS);
-		logger.info("***** {}", user1);
-		logger.info("***** {}", user2);
-		logger.info("***** {}", user3);
+		UserPlay userPlay = new UserPlay();
+
+		logger.info("*** testRandomNames()");
+
+		long lStartTime = System.currentTimeMillis();
+		for (int i = 0; i < 10000000; i++) {
+			User user1 = userPlay.getUserByNumberViaList((random.nextInt(Integer.MAX_VALUE)) % TOTAL_USERS);
+		}
+		logger.info("*** Access via List:{}", System.currentTimeMillis() - lStartTime);
+
+		lStartTime = System.currentTimeMillis();
+		for (int i = 0; i < 10000000; i++) {
+			User user1 = userPlay.getUserByNumberViaList((random.nextInt(Integer.MAX_VALUE)) % TOTAL_USERS);
+		}
+		logger.info("*** Access via List:{}", System.currentTimeMillis() - lStartTime);
+
+		lStartTime = System.currentTimeMillis();
+		for (int i = 0; i < 10000000; i++) {
+			User user1 = userPlay.getUserByNumberViaList((random.nextInt(Integer.MAX_VALUE)) % TOTAL_USERS);
+		}
+		logger.info("*** Access via List:{}", System.currentTimeMillis() - lStartTime);
+
+		lStartTime = System.currentTimeMillis();
+		for (int i = 0; i < 10000000; i++) {
+			User user1 = userPlay.getUserByNumberViaMap((random.nextInt(Integer.MAX_VALUE)) % TOTAL_USERS);
+		}
+		logger.info("*** Access via Map:{}", System.currentTimeMillis() - lStartTime);
+
+		lStartTime = System.currentTimeMillis();
+		for (int i = 0; i < 10000000; i++) {
+			User user1 = userPlay.getUserByNumberViaMap((random.nextInt(Integer.MAX_VALUE)) % TOTAL_USERS);
+		}
+		logger.info("*** Access via Map:{}", System.currentTimeMillis() - lStartTime);
+
+		lStartTime = System.currentTimeMillis();
+		for (int i = 0; i < 10000000; i++) {
+			User user1 = userPlay.getUserByNumberViaMap((random.nextInt(Integer.MAX_VALUE)) % TOTAL_USERS);
+		}
+		logger.info("*** Access via Map:{}", System.currentTimeMillis() - lStartTime);
+
+
 	}
 
-	// @Test
+	@Test
 	public void testAccessUsers() {
 		long lStartTime = System.currentTimeMillis();
 		UserPlay userPlay = new UserPlay();

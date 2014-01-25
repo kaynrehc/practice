@@ -1,18 +1,39 @@
 package com.enthusys.play.bond;
 
+import com.enthusys.play.BondMathException;
+import com.enthusys.play.Visitable;
+import com.enthusys.play.Visitor;
+
 import java.util.Date;
+import java.util.Random;
 
 /**
  * User: mchernyak
  * Date: 1/6/14
  * Time: 6:51 PM
  */
-public class Bond {
+public class Bond implements Visitable {
 	private String issuer;
 	private long term;
 	private Date maturityDate;
 	private double notionalAmount;
 	private float couponRate;
+
+	@Override
+	public void accept(Visitor visitor) {
+		 visitor.visit(this);
+	}
+
+	public double calculateValue(double inputX) {
+		double rv = 0;
+
+		rv = new Random().nextDouble();
+
+		if (rv < 0) {
+			rv *= -1.0;
+		}
+		return rv;
+	}
 
 	public Bond(String issuer, int term, Date maturityDate, float notionalAmount, float couponRate) {
 		this.issuer = issuer;

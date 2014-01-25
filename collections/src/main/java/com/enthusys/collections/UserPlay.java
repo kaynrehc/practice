@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class UserPlay {
 	private static final Logger logger = LoggerFactory.getLogger(UserPlay.class);
@@ -25,7 +26,7 @@ public class UserPlay {
 	public UserPlay() {
 		userMap = new HashMap<Integer, User>();
 		userTreeSet = new TreeSet<User>();
-		userList = new ArrayList<User>();
+		userList = new CopyOnWriteArrayList<>();
 
 		loadUsersFromFile("/home/mchernyak/data/People1.csv");
 		loadUsersFromFile("/home/mchernyak/data/People2.csv");
@@ -35,10 +36,12 @@ public class UserPlay {
 		return userList.size();
 	}
 
-	public User getUserByNumber(Integer number) {
-		//User u = userMap.get(number);
-		User u = userList.get(number);
-		return u;
+	public User getUserByNumberViaList(Integer number) {
+		return userList.get(number);
+	}
+
+	public User getUserByNumberViaMap(Integer number) {
+		return userMap.get(number);
 	}
 
 	public void loadUsersFromFile(String csvFile) {
@@ -53,8 +56,8 @@ public class UserPlay {
 
 			while ((line = br.readLine()) != null) {
 				User u = new User(line);
-				//userMap.put(u.getNumber(), u);
-				//userTreeSet.add(u);
+				userMap.put(u.getNumber(), u);
+				userTreeSet.add(u);
 				userList.add(u);
 			}
 		} catch (IOException e) {

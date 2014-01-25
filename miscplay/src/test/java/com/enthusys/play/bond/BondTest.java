@@ -1,5 +1,6 @@
 package com.enthusys.play.bond;
 
+import com.enthusys.play.BondMathException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.junit.Test;
@@ -12,6 +13,12 @@ import static org.junit.Assert.assertTrue;
 
 public class BondTest {
 	private static final Logger logger = LoggerFactory.getLogger(BondTest.class);
+
+	@Test
+	public void testBondVisitor() {
+		BondVisitor bondVisitor = new BondVisitor();
+
+	}
 
 	@Test
 	public void testBond() {
@@ -64,7 +71,7 @@ public class BondTest {
 		b5 = new Bond("UK Treasury", 15, cal15yrs.getTime(), 1000.0F, 10.1F);
 
 		Bond b6 = b5;
-		assertEquals(b5,b6);
+		assertEquals(b5, b6);
 
 		logger.info("***** b1 {}", b1.hashCode());
 		logger.info("***** b2 {}", b2.hashCode());
@@ -72,6 +79,20 @@ public class BondTest {
 		logger.info("***** b4 {}", b4.hashCode());
 		logger.info("***** b5 {}", b5.hashCode());
 		logger.info("***** b6 {}", b6.hashCode());
+
+		BondVisitor bondVisitor = new BondVisitor();
+		b1.accept(bondVisitor);
+		logger.info("***** {}", bondVisitor.getTotalValue());
+		b2.accept(bondVisitor);
+		logger.info("***** {}", bondVisitor.getTotalValue());
+		b3.accept(bondVisitor);
+		logger.info("***** {}", bondVisitor.getTotalValue());
+		b4.accept(bondVisitor);
+		logger.info("***** {}", bondVisitor.getTotalValue());
+		b5.accept(bondVisitor);
+		logger.info("***** {}", bondVisitor.getTotalValue());
+		b6.accept(bondVisitor);
+		logger.info("***** {}", bondVisitor.getTotalValue());
 
 	}
 }
