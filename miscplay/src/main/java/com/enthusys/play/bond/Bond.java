@@ -1,6 +1,5 @@
 package com.enthusys.play.bond;
 
-import com.enthusys.play.BondMathException;
 import com.enthusys.play.Visitable;
 import com.enthusys.play.Visitor;
 

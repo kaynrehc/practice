@@ -1,6 +1,5 @@
 package com.enthusys.play.bond;
 
-import com.enthusys.play.BondMathException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.junit.Test;
@@ -29,7 +28,6 @@ public class BondTest {
 		cal30yrs.set(2044, 5, 31, 0, 0);
 		Calendar cal15yrs = Calendar.getInstance();
 		cal30yrs.set(2029, 5, 31, 0, 0);
-
 
 		Bond b2 = new Bond("US Treasury", 30, cal30yrs.getTime(), 10000.0F, 7.0F);
 		logger.info("**** {}", b2);

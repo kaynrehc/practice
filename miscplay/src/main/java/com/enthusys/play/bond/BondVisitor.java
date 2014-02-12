@@ -1,5 +1,6 @@
 package com.enthusys.play.bond;
 
+import com.enthusys.play.Visitable;
 import com.enthusys.play.Visitor;
 
 /**
@@ -11,8 +12,12 @@ public class BondVisitor implements Visitor {
 	double totalValue = 0.0;
 
 	@Override
-	public void visit(Bond bond) {
-		totalValue += bond.calculateValue(1);
+	public void visit(Visitable visitable) throws IllegalArgumentException {
+		if (visitable instanceof Bond) {
+			totalValue += ((Bond) visitable).calculateValue(1);
+		} else {
+			throw new IllegalArgumentException("Expecting an instance of Bond class");
+		}
 	}
 
 	public double getTotalValue() {

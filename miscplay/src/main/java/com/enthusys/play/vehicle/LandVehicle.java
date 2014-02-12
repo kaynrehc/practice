@@ -5,7 +5,7 @@ package com.enthusys.play.vehicle;
  * Date: 1/6/14
  * Time: 8:23 PM
  */
-public class LandVehicle implements Vehicle {
+public abstract class LandVehicle implements Vehicle {
 	private String name;
 
 	@Override
