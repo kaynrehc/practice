@@ -4,9 +4,10 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNotNull;
+import java.util.Calendar;
+import java.util.Date;
+
+import static org.junit.Assert.*;
 
 /**
  * User: mchernyak
@@ -16,18 +17,53 @@ import static org.junit.Assert.assertNotNull;
 public class MortgageTest {
 	private static final Logger log = LoggerFactory.getLogger(MortgageTest.class);
 
-	/* 	done: create a mortgage with attributes - make sure the base attributes are set correctly
+	/*	done: create a mortgage with attributes - make sure the base attributes are set correctly
 		done: test mortgage equality
 		done: update mortgage type
-		todo: start date - make sure start date set correctly
-		todo: calculate end date - make sure the end date is set correctly
-		todo: calculate the number of monthly payments
-		todo: calculate the monthly payment amount
-		todo: calculate the amount of principal and interest of a payment
+		done: calculate end date - make sure the end date is set correctly
+		done: calculate the number of monthly payments
+		done: calculate the monthly payment amount
 	 */
 
 	@Test
-	public void testMortgageType() {
+	public void testCalculatesPaymentAmount() {
+		Mortgage mortgage = createTestMortgage();
+		assertEquals(1264.14, mortgage.getPaymentAmount(), 0.0001);
+
+		mortgage.setPrincipalAmount(250000);
+		assertEquals(1580.17, mortgage.getPaymentAmount(), 0.0001);
+	}
+
+	@Test
+	public void testCalculatesNumberOfMonthlyPayments() {
+		Mortgage mortgage = createTestMortgage();
+		mortgage.setStartDate(new Date());
+
+		int expectedMonthlyPayments = 30 * 12;
+		assertEquals("should be the same", expectedMonthlyPayments, mortgage.getNumberOfMonthlyPayments());
+	}
+
+	@Test
+	public void testCalculatesMaturityDate() {
+		// test method code - prep for actual test
+		Calendar calendar30YearsFromNow= Calendar.getInstance();
+		Date startDate = new Date();
+		calendar30YearsFromNow.setTime(startDate);
+		calendar30YearsFromNow.add(Calendar.YEAR, +30);
+
+		Mortgage mortgage = createTestMortgage();
+		mortgage.setStartDate(startDate);
+		Date mortgageMaturityDate = mortgage.getMaturityDate();
+
+		Calendar calendarMaturity = Calendar.getInstance();
+		calendarMaturity.setTime(mortgageMaturityDate);
+
+		assertNotSame(calendar30YearsFromNow, calendarMaturity);
+		assertEquals(calendar30YearsFromNow, calendarMaturity);
+	}
+
+	@Test
+	public void testSetsMortgageType() {
 		Mortgage mortgage1 = createTestMortgage();
 
 		MortgageType mtOriginal = mortgage1.getMortgageType();
@@ -39,7 +75,7 @@ public class MortgageTest {
 	}
 
 	@Test
-	public void testCreate() {
+	public void testCreatesMortgageInstance() {
 		Mortgage mortgage = createTestMortgage();
 		log.info("***** {}", mortgage);
 		assertNotNull(mortgage);
@@ -50,11 +86,9 @@ public class MortgageTest {
 	}
 
 	@Test
-	public void testEquals() {
+	public void testVerifiesEqualsAndHashCode() {
 		Mortgage mortgage1 = createTestMortgage();
 		Mortgage mortgage2 = createTestMortgage();
-		log.info("***** {}", mortgage1);
-		log.info("***** {}", mortgage2);
 		assertEquals("mortgages should be equals", mortgage1, mortgage2);
 
 		int hash1 = mortgage1.hashCode();
@@ -63,8 +97,6 @@ public class MortgageTest {
 	}
 
 	private Mortgage createTestMortgage() {
-		return new Mortgage(MortgageType.FIXED, 100000, 30, 5.1);
+		return new Mortgage(MortgageType.FIXED, 200000, 30, 6.5);
 	}
-
-
 }

@@ -1,5 +1,8 @@
 package com.enthusys.fincalc;
 
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  * User: mchernyak
  * Date: 2/11/14
@@ -10,12 +13,48 @@ public class Mortgage {
 	private double principalAmount;
 	private int termYears;
 	private double apr;
+	private Date startDate;
+	private Date maturityDate;
+	private int numberOfMonthlyPayments;
+	private double paymentAmount;
 
 	public Mortgage(MortgageType mortgageType, double principalAmount, int termYears, double apr) {
 		this.mortgageType = mortgageType;
 		this.principalAmount = principalAmount;
 		this.termYears = termYears;
 		this.apr = apr;
+		this.numberOfMonthlyPayments = termYears * 12;
+		calculatePaymentAmount();
+	}
+
+	private void calculatePaymentAmount() {
+		double pmt = ((apr / 100 / 12) * principalAmount) /
+				(1 - Math.pow((1 + (apr / 100 / 12)), ((-1) * numberOfMonthlyPayments)));
+		paymentAmount = Math.round(pmt * 100.0) / 100.0;
+	}
+
+	public double getPaymentAmount() {
+		return paymentAmount;
+	}
+
+	public int getNumberOfMonthlyPayments() {
+		return numberOfMonthlyPayments;
+	}
+
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(startDate);
+		calendar.add(Calendar.YEAR, termYears);
+		maturityDate = calendar.getTime();
+	}
+
+	public Date getMaturityDate() {
+		return maturityDate;
 	}
 
 	public MortgageType getMortgageType() {
@@ -32,7 +71,9 @@ public class Mortgage {
 
 	public void setPrincipalAmount(double principalAmount) {
 		this.principalAmount = principalAmount;
+		calculatePaymentAmount();
 	}
+
 
 	public int getTermYears() {
 		return termYears;
@@ -40,6 +81,7 @@ public class Mortgage {
 
 	public void setTermYears(int termYears) {
 		this.termYears = termYears;
+		calculatePaymentAmount();
 	}
 
 	public double getApr() {
@@ -48,6 +90,7 @@ public class Mortgage {
 
 	public void setApr(double apr) {
 		this.apr = apr;
+		calculatePaymentAmount();
 	}
 
 	@Override
