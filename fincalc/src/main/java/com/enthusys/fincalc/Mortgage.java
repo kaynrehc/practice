@@ -70,10 +70,12 @@ public class Mortgage {
 	}
 
 	public void setPrincipalAmount(double principalAmount) {
+		if (principalAmount < 1.0 || principalAmount > 1000000.0) {
+			throw new IllegalArgumentException("principal amount must be between 1 and 1000000");
+		}
 		this.principalAmount = principalAmount;
 		calculatePaymentAmount();
 	}
-
 
 	public int getTermYears() {
 		return termYears;
@@ -89,6 +91,9 @@ public class Mortgage {
 	}
 
 	public void setApr(double apr) {
+		if (apr < 0 ||apr > 100) {
+			throw new IllegalArgumentException("apr must be between 1 and 100");
+		}
 		this.apr = apr;
 		calculatePaymentAmount();
 	}

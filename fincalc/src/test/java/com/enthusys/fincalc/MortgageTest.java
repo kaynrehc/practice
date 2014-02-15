@@ -23,7 +23,20 @@ public class MortgageTest {
 		done: calculate end date - make sure the end date is set correctly
 		done: calculate the number of monthly payments
 		done: calculate the monthly payment amount
+		todo: throw an illegal arg exception upon invalid principal, apr
 	 */
+
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void testRejectIllegalPrincipal() {
+		Mortgage mortgage = createTestMortgage();
+		mortgage.setPrincipalAmount(-1);
+	}
+
+	@Test(expected = java.lang.IllegalArgumentException.class)
+	public void testRejectIllegalApr() {
+			Mortgage mortgage = createTestMortgage();
+			mortgage.setApr(-1.0);
+	}
 
 	@Test
 	public void testCalculatesPaymentAmount() {
@@ -46,7 +59,7 @@ public class MortgageTest {
 	@Test
 	public void testCalculatesMaturityDate() {
 		// test method code - prep for actual test
-		Calendar calendar30YearsFromNow= Calendar.getInstance();
+		Calendar calendar30YearsFromNow = Calendar.getInstance();
 		Date startDate = new Date();
 		calendar30YearsFromNow.setTime(startDate);
 		calendar30YearsFromNow.add(Calendar.YEAR, +30);
