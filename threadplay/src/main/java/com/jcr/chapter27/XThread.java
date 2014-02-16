@@ -4,6 +4,7 @@ import java.util.concurrent.Semaphore;
 
 // A thread of execution that decrements or increments the count.
 class XThread implements Runnable {
+
 	String name;
 	Semaphore sem;
 	int x, y;
@@ -12,7 +13,7 @@ class XThread implements Runnable {
 		sem = s;
 		name = n;
 		this.x = x;
-		this.y= y;
+		this.y = y;
 		new Thread(this).start();
 	}
 
@@ -23,8 +24,10 @@ class XThread implements Runnable {
 		try {
 			//********************* First, get a permit.
 			System.out.println(name + " is waiting for a permit.");
+			System.out.println(name + " sees available permits: " + sem.availablePermits());
 			sem.acquire();
 			System.out.println(name + " gets a permit.");
+			System.out.println(name + " sees available permits: " + sem.availablePermits());
 
 			// Now, access shared resource.
 			for (int i = 0; i < y; i++) {
