@@ -18,6 +18,8 @@ public class MortgageTest {
 	private static final Logger log = LoggerFactory.getLogger(MortgageTest.class);
 
 	/*	done: create a mortgage with attributes - make sure the base attributes are set correctly
+		done: test set term
+		done: test set/get start date
 		done: test mortgage equality
 		done: update mortgage type
 		done: calculate end date - make sure the end date is set correctly
@@ -25,6 +27,29 @@ public class MortgageTest {
 		done: calculate the monthly payment amount
 		todo: throw an illegal arg exception upon invalid principal, apr
 	 */
+
+	@Test
+	public void testSetStartDate() {
+		Date today = new Date();
+		Mortgage mortgage = createTestMortgage();
+		mortgage.setStartDate(today);
+		assertEquals("dates should be equal", today, mortgage.getStartDate());
+	}
+
+	@Test
+	public void testSetApr() {
+		Mortgage mortgage = createTestMortgage();
+		mortgage.setApr(5.0);
+		assertEquals(5.0, mortgage.getApr(), 0.0001);
+	}
+
+
+	@Test
+	public void testSetTerm() {
+		Mortgage mortgage = createTestMortgage();
+		mortgage.setTermYears(100);
+		assertEquals(100, mortgage.getTermYears());
+	}
 
 	@Test(expected = java.lang.IllegalArgumentException.class)
 	public void testRejectIllegalPrincipal() {
@@ -93,8 +118,8 @@ public class MortgageTest {
 		log.info("***** {}", mortgage);
 		assertNotNull(mortgage);
 		assertEquals("type", MortgageType.FIXED, mortgage.getMortgageType());
-		assertEquals(100000, mortgage.getPrincipalAmount(), 0.000001);
-		assertEquals(5.1, mortgage.getApr(), 0.000001);
+		assertEquals(200000, mortgage.getPrincipalAmount(), 0.000001);
+		assertEquals(6.5, mortgage.getApr(), 0.000001);
 		assertEquals("years", 30, mortgage.getTermYears());
 	}
 
