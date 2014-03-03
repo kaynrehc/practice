@@ -1,5 +1,6 @@
 package net.jcip.examples;
 
+import static org.junit.Assert.assertEquals;
 import junit.framework.TestCase;
 
 /**

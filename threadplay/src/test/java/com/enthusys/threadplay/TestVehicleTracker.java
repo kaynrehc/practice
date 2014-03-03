@@ -1,98 +1,127 @@
 package com.enthusys.threadplay;
 
+import net.jcip.examples.MonitorVehicleTracker;
+import net.jcip.examples.MutablePoint;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.jcip.examples.MonitorVehicleTracker;
-import net.jcip.examples.MutablePoint;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.CountDownLatch;
 
 public class TestVehicleTracker {
-	private static final Logger logger = LoggerFactory.getLogger(TestVehicleTracker.class);
-	private String[] vehicles = {"Taxi1", "Taxi2", "Taxi3", "Taxi4", "Taxi5", "Taxi6", "Bus1", "Bus2", "Bus3", "Bus4",
-			"Bus5", "Bus6", "Truck1", "Truck2", "Truck3", "Truck4", "Truck5", "Truck6"};
+    private static final Logger logger = LoggerFactory.getLogger(TestVehicleTracker.class);
+    private String[] vehicles = {"Taxi1", "Taxi2", "Taxi3", "Taxi4", "Taxi5", "Taxi6", "Bus1", "Bus2", "Bus3", "Bus4",
+            "Bus5", "Bus6", "Truck1", "Truck2", "Truck3", "Truck4", "Truck5", "Truck6"};
 
-	@Test
-	public void testVehTracker() {
+    @Test
+    public void testVehTracker() {
+        final CountDownLatch startGate = new CountDownLatch(1);
+        final CountDownLatch endGate = new CountDownLatch(2);
 
-		logger.info("*** testVehTracker() start");
+        logger.info("*** testVehTracker() start");
 
-		Map vehicleLocations = new HashMap<String, MutablePoint>();
 
-		for (int i = 0; i < vehicles.length; i++) {
-			vehicleLocations.put(vehicles[i], new MutablePoint());
-		}
+        Map vehicleLocations = new HashMap<String, MutablePoint>();
 
-		MonitorVehicleTracker vt = new MonitorVehicleTracker(vehicleLocations);
-		PutVehicles pv = new PutVehicles(vt, 100);
-		RenderVehicles rv = new RenderVehicles(vt, 150);
-		Thread t1 = new Thread(pv);
-		Thread t2 = new Thread(rv);
+        for (int i = 0; i < vehicles.length; i++) {
+            vehicleLocations.put(vehicles[i], new MutablePoint());
+        }
 
-		t1.start();
-		t2.start();
+        MonitorVehicleTracker vt = new MonitorVehicleTracker(vehicleLocations);
+        PutVehicles pv = new PutVehicles(vt, startGate, endGate, 20);
+        RenderVehicles rv = new RenderVehicles(vt, startGate, endGate, 20);
+        Thread t1 = new Thread(pv);
+        Thread t2 = new Thread(rv);
 
-		try {
-			t1.join();
-			t2.join();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		logger.info("*** testVehTracker() finish");
+        t1.start();
+        t2.start();
 
-	}
+        startGate.countDown();
 
-	private class PutVehicles implements Runnable {
-		private MonitorVehicleTracker vt;
-		private int nIterations;
+//        try {
+//            t1.join();
+//            t2.join();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+        try {
+            endGate.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        logger.info("*** testVehTracker() finish");
 
-		private PutVehicles(MonitorVehicleTracker vt, int n) {
-			this.vt = vt;
-			this.nIterations = n;
-		}
+    }
 
-		public void run() {
-			logger.info("*** {}", nIterations);
+    private class PutVehicles implements Runnable {
+        private MonitorVehicleTracker vt;
+        private int nIterations;
+        private CountDownLatch startGate;
+        private CountDownLatch endGate;
 
-			Random randomVehicleIndex = new Random();
-			Random randomX = new Random();
-			Random randomY = new Random();
+        private PutVehicles(MonitorVehicleTracker vt, CountDownLatch startGate, CountDownLatch endGate, int n) {
+            this.startGate = startGate;
+            this.endGate = endGate;
+            this.vt = vt;
+            this.nIterations = n;
+        }
 
-			for (int i = 0; i < nIterations; i++) {
-				int x = randomX.nextInt(10);
-				int y = randomY.nextInt(10);
-				String s = vehicles[randomVehicleIndex.nextInt(vehicles.length)];
-				logger.info("+++ {} {} {}", s, x, y);
-				vt.setLocation(s, x, y);
-			}
-		}
-	}
+        public void run() {
+            logger.info("*** {}", nIterations);
 
-	private class RenderVehicles implements Runnable {
-		private MonitorVehicleTracker vt;
-		private int nIterations;
+            Random randomVehicleIndex = new Random();
+            Random randomX = new Random();
+            Random randomY = new Random();
+            try {
+                startGate.await();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
-		private RenderVehicles(MonitorVehicleTracker vt, int n) {
-			this.vt = vt;
-			this.nIterations = n;
-		}
+            for (int i = 0; i < nIterations; i++) {
+                int x = randomX.nextInt(10);
+                int y = randomY.nextInt(10);
+                String s = vehicles[randomVehicleIndex.nextInt(vehicles.length)];
+                logger.info("+++ {} {} {}", s, x, y);
+                vt.setLocation(s, x, y);
+            }
+            endGate.countDown();
+        }
+    }
 
-		public void run() {
-			logger.info("*** {}", nIterations);
+    private class RenderVehicles implements Runnable {
+        private MonitorVehicleTracker vt;
+        private int nIterations;
+        private CountDownLatch startGate;
+        private CountDownLatch endGate;
 
-			Random randomVehicleIndex = new Random();
+        private RenderVehicles(MonitorVehicleTracker vt, CountDownLatch startGate, CountDownLatch endGate, int n) {
+            this.startGate = startGate;
+            this.endGate = endGate;
+            this.vt = vt;
+            this.nIterations = n;
+        }
 
-			for (int i = 0; i < nIterations; i++) {
-				String s = vehicles[randomVehicleIndex.nextInt(vehicles.length)];
-				MutablePoint mp = vt.getLocation(s);
-				logger.info("--- {} {} {}", s, mp.getX(), mp.getY());
-			}
-		}
-	}
+        public void run() {
+            logger.info("*** {}", nIterations);
+
+            Random randomVehicleIndex = new Random();
+            try {
+                startGate.await();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            for (int i = 0; i < nIterations; i++) {
+                String s = vehicles[randomVehicleIndex.nextInt(vehicles.length)];
+                MutablePoint mp = vt.getLocation(s);
+                logger.info("--- {} {} {}", s, mp.getX(), mp.getY());
+            }
+            endGate.countDown();
+        }
+    }
 
 
 }

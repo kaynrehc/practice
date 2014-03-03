@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import java.util.Map;
 import java.util.Random;
-import java.util.TreeSet;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 
@@ -98,7 +98,7 @@ public class TestUserPlay {
 
 		// iterate over TreeSet
 		lStartTime = System.currentTimeMillis();
-		TreeSet<User> userSet = userPlay.getUserTreeSet();
+		Set<User> userSet = userPlay.getUserTreeSet();
 		assertEquals("expect exact number of users", 100000, userSet.size());
 
 		for (User u : userSet) {

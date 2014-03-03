@@ -19,7 +19,7 @@ public class UserPlay {
 		return userMap;
 	}
 
-	public TreeSet<User> getUserTreeSet() {
+	public Set<User> getUserTreeSet() {
 		return userTreeSet;
 	}
 
