@@ -1,3 +1,4 @@
+
 package com.enthusys.collections;
 
 import org.slf4j.Logger;

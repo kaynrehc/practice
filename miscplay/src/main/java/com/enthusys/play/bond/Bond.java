@@ -11,7 +11,7 @@ import java.util.Random;
  * Date: 1/6/14
  * Time: 6:51 PM
  */
-public class Bond implements Visitable {
+public class Bond implements Visitable, Comparable<Bond> {
 	private String issuer;
 	private long term;
 	private Date maturityDate;
@@ -92,6 +92,11 @@ public class Bond implements Visitable {
 				", notionalAmount=" + notionalAmount +
 				", couponRate=" + couponRate +
 				'}';
+	}
+
+	@Override
+	public int compareTo(Bond o) {
+		return 0;
 	}
 
 	public long getTerm() {
